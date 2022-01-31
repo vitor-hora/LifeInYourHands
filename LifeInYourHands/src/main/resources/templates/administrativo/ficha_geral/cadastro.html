@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	layout:decorate="~{administrativo/fragments/layout}">
+<head>
+<title>Página de Ficha Geral - LifeInYourHands</title>
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div class="page-header">
+			<nav class="navbar navbar-expand-md navbar-top bg-light">
+				<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+					<ul class="navbar-nav">
+						<li class="nav-item active"><i class="oi oi-caret-right"></i>
+							<span>Ficha Geral</span></li>
+					</ul>
+				</div>
+				<!-- CORRIGIR LINK -->
+				<a class="btn btn-primary btn-md"
+					href="/administrativo/ficha_geral/editar/11" role="button"> <span
+					class="oi oi-spreadsheet" title="Cadastro" aria-hidden="true"></span>
+					<span>Ficha Geral</span>
+				</a>
+			</nav>
+		</div>
+
+		<div class="container" id="cadastro">
+			<form action="/administrativo/ficha_geral/salvar"
+				th:object="${fichaGeral}" method="POST">
+				<div class="form-row">
+					<div class="form-group col-md-12">
+						<label for="nome">Nome do Paciente</label> <input type="text"
+							class="form-control" id="nome" name="nome" readonly="readonly" placeholder="Nome Completo do Paciente"
+							 autofocus="autofocus" th:field="*{paciente.nome}" value="" />  
+						<div class="invalid-feedback"></div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="peso">Peso (kg)</label> <input type="text" data-mask="000"
+							class="form-control" id="peso" name="peso" th:field="*{peso}" value="" />
+						<div class="invalid-feedback"></div>
+					</div>	
+					<div class="form-group col-md-6">
+						<label for="altura">Altura (m)</label> <input type="text" data-mask="0.00"
+							class="form-control" id="altura" name="altura" th:field="*{altura}" value="" />
+						<div class="invalid-feedback"></div>
+					</div>	
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="tipoSangue">Tipo Sanguíneo</label> <select id="tipoSangue"
+							class="form-control" name="tipoSangue" th:field="*{tipoSangue}">
+							<option value="">Selecione...</option>
+							<option value="A">A</option>
+							<option value="B">B</option>
+							<option value="AB">AB</option>
+							<option value="O">O</option>
+						</select>
+						<div class="invalid-feedback"></div>
+					</div>	
+					<div class="form-group col-md-6">
+						<label for="fatorRH">Fator RH</label> <select id="tipoSangue"
+							class="form-control" name="fatorRH" th:field="*{fatorRH}">
+							<option value="">Selecione...</option>
+							<option value="1">POSITIVO +</option>
+							<option value="0">NEGATIVO -</option>
+						</select>
+						<div class="invalid-feedback"></div>
+					</div>	
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="consomeAlcool">Consome Álcool</label> <select id="consomeAlcool"
+							class="form-control" name="consomeAlcool" th:field="*{consomeAlcool}">
+							<option value="">Selecione...</option>
+							<option value="1">Sim</option>
+							<option value="0">Não</option>
+						</select>
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="usaDroga">Faz uso de Droga</label> <select id="usaDroga"
+							class="form-control" name="usaDroga" th:field="*{usaDroga}">
+							<option value="">Selecione...</option>
+							<option value="1">Sim</option>
+							<option value="0">Não</option>
+						</select>
+						<div class="invalid-feedback"></div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-12">
+						<label for="planoSaude">Plano de Saúde</label> <input type="text"
+							class="form-control" id="planoSaude" name="planoSaude" 
+							th:field="*{planoSaude}" value="" />
+					<div class="invalid-feedback"></div>
+					</div>			
+				</div>
+			
+				<input type="hidden" id="id" th:field="*{id}" value="" /> 
+								<input type="hidden" id="id_paciente" th:field="*{paciente.id}" value="" /> 
+				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+			</form>
+		</div>
+	</section>
+
+
+</body>
+</html>

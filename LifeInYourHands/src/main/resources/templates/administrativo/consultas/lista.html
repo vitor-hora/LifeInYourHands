@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	layout:decorate="~{administrativo/fragments/layout}">
+<head>
+<title>Grade de Horário dos Médicos</title>
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Grade de Horário dos Médicos</span></li>
+				</ul>
+				<a class="btn btn-primary btn-md"
+					href="/administrativo/grade_horarios/cadastrar" role="button"> <span
+					class="oi oi-plus" title="Cadastro" aria-hidden="true"></span> 
+					<span>Cadastrar Horário</span>
+				</a>
+			</div>
+		</nav>
+
+		<div class="container">
+		
+				<nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between mb-3">
+				    <div class="navbar-nav">
+				        <a class="nav-item nav-link active" href="">Todos</a>
+				        <a class="nav-item nav-link" href="">Aguardando</a>
+				        <a class="nav-item nav-link" href="">Aprovado</a>
+				        <a class="nav-item nav-link" href="">Entregue</a>
+				    </div>
+				    <a href="/pedido/formulario"><button class="btn btn-outline-secondary my-2 my-sm-0">Novo</button></a>
+				</nav>
+
+				<div class="table-responsive">
+				<table class="table table-striped table-hover table-sm">
+					<thead>
+						<tr>
+							<th>Paciente</th>
+							<th>Data Consulta</th>
+							<th>Especialidade</th>
+							<th>Medico</th>									
+							<th>Status</th>
+							<th>Ação</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="consulta : ${listaConsultas}">
+							<td th:text="${consulta.paciente.nome}"></td>
+							<td th:text="${#calendars.format(consulta.dataConsulta, 'dd/MMM/yyyy HH:mm')}"></td>
+							<td th:text="${consulta.medico.especialidade.nome}"></td>		
+							<td th:text="${consulta.medico.nome}"></td>				
+							<td th:text="REALIZADA"></td>
+
+							<td colspan="2"><a class="btn btn-info btn-sm"
+								th:href="@{/administrativo/consultas/editar/{id}(id=${consulta.id})}"
+								role="button"> <span class="oi oi-brush" title="Editar"
+									aria-hidden="true"></span>
+
+							</a> 
+							<a class="btn btn-info btn-sm" data-toggle="modal"
+								data-target="#modal-warning"
+								th:attr="data-target='#modal-warning'+${consulta.id }"><span
+									class="oi oi-circle-x" title="Remover" aria-hidden="true"></span></a>
+
+								<div class="modal modal-warning fade in"
+									th:id="modal-warning+${consulta.id}">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<span aria-hidden="true">x</span>
+												</button>
+												<h5 class="modal-title">Remover Consulta</h5>
+											</div>
+											<div class="modal-body">
+												<h3>Deseja realmente remover a Consulta?</h3>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-outline pull-left"
+													data-dismiss="modal">Fechar</button>
+												<a type="button" class="btn btn-outline"
+													th:href="@{/administrativo/consultas/remover/{id}(id=${consulta.id})}">
+													<i class="fa fa-check"></i>&nbsp;Sim</a>
+											</div>
+										</div>
+									</div>
+								</div></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+
+
+</body>
+</html>

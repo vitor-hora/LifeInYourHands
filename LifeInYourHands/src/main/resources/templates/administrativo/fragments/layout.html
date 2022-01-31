@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title>Sistema de Marcação de Consulta - LifeInYourHands</title>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link rel="icon" href="/image/life_in_your_hands1.png" />
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!-- Bootstrap core CSS -->
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css"
+	rel="stylesheet" />
+<!-- Custom styles for this template -->
+<link href="/css/style.css" rel="stylesheet" />
+<script src="/js/script.js"></script>
+
+</head>
+<body>
+	<header>
+		<nav
+			class="navbar navbar-inverse navbar navbar-dark bg-dark fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="btn btn-dark navbar-toggle pull-left">
+						<i class="oi oi-menu"></i>
+					</button>
+					<a class="navbar-brand " href="#">Painel Administrativo - LifeInYourHands</a>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="layout-main" >
+
+		<aside>
+			<nav class="sidebar sidebar-open" style="height: 1800px">
+				<ul class="nav nav-pills">
+					<li class="nav-item"><a class="nav-link " href="/"> <i
+							class="oi oi-home"></i> <span>Home</span>
+					</a></li>
+				</ul>
+				
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Pacientes</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/pacientes/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/pacientes/listar"> <i
+							class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a></li>
+					
+					
+				</ul>
+
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Médicos</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/medicos/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/medicos/listar"> <i
+							class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a></li>
+					
+					
+				</ul>
+				
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Especialidades</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/especialidades/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/especialidades/listar"> <i
+							class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a></li>					
+						
+					
+				</ul>
+				
+					<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Grade Horário</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/grade_horarios/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/grade_horarios/listar"> <i
+							class="oi oi-spreadsheet"></i> <span>Grade Horário</span>
+					</a></li>					
+						
+					
+				</ul>
+				
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Consultas</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/consultas/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/consultas/listar"> <i
+							class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a></li>					
+						
+					
+				</ul>
+				
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Ficha Geral</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/ficha_geral/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+						<!-- CORRIGIR LINK -->
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/ficha_geral/editar/11"> <i
+							class="oi oi-spreadsheet"></i> <span>Ficha Geral </span>
+					</a></li>					
+						
+					
+				</ul>
+				
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Medicamentos</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/medicamentos/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/medicamentos/listar"> <i
+							class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a></li>					
+						
+					
+				</ul>
+				
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Procedimentos</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/procedimentos/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/procedimentos/listar"> <i
+							class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a></li>					
+						
+					
+				</ul>
+				
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Exames</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/exames/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/exames/listar"> <i
+							class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a></li>					
+						
+					
+				</ul>
+				
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Papeis</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/papeis/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/papeis/listar"> <i
+							class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a></li>
+					
+					
+				</ul>
+				
+				<ul class="nav nav-pills">
+					<li class="nav-item"><span class="nav-link active">Permissões</span></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/permissoes/cadastrar"> <i
+							class="oi oi-plus"></i> <span>Cadastrar </span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/administrativo/permissoes/listar"> <i
+							class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a></li>
+					
+					
+				</ul>
+				
+
+				
+
+				
+
+				
+				
+				
+			</nav>
+		</aside>
+
+		<section class="layout-content" layout:fragment="corpo">
+				Principal			
+		</section>
+
+	</div>
+	<footer class="layout-footer">
+		<div class="container">
+			<span class="footer-copy">&copy; 2022 TCC PUC MINAS - LifeInYourHands</span>
+		</div>
+	</footer>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/webjars/jquery/jquery.min.js"></script>
+	<script src="/webjars/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	    
+		$(function() {
+			$('[data-toggle="popover"]').popover();
+		});
+		
+		$(document).ready(function(){
+		    $(".navbar-toggle").click(function(){
+		        $(".sidebar").toggleClass("sidebar-open");
+		    })
+		});
+
+	</script>
+</body>
+</html>
