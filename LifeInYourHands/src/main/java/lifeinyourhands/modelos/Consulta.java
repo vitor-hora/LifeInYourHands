@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,10 +17,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "consulta")
+@SQLDelete(sql = "update Consulta set ativo = 0 where id = ?") 
+@Where(clause = "ativo = 1")
 public class Consulta implements Serializable {
 		
 	public Consulta() {
@@ -31,6 +36,8 @@ public class Consulta implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	private Boolean ativo = true;
 
 	private Boolean necessidadeAfastamento;
 	
@@ -51,13 +58,13 @@ public class Consulta implements Serializable {
 	@Transient
 	private String dataConsultaStr;
 	
-	@OneToMany(mappedBy = "consulta")
+	@OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL)
 	private List<Exame> ExamesRealizados;
 
-	@OneToMany(mappedBy = "consulta")
+	@OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL)
 	private List<Medicamento> medicamentosReceitados;
 
-	@OneToMany(mappedBy = "consulta")
+	@OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL)
 	private List<Procedimento> procedimentosReceitados;
 
 	@ManyToOne
@@ -155,15 +162,16 @@ public class Consulta implements Serializable {
 	public void setMedico(Medico medico) {
 		this.medico = medico;
 	}
-	
-	
 
 	@Override
 	public String toString() {
 		return "Consulta [id=" + id + ", necessidadeAfastamento=" + necessidadeAfastamento + ", afastamentoInicio="
 				+ afastamentoInicio + ", afastamentoFim=" + afastamentoFim + ", dataConsulta=" + dataConsulta
-				+ ", dataConsultaStr=" + dataConsultaStr + ", paciente=" + paciente + ", medico=" + medico + "]";
+				+ ", dataConsultaStr=" + dataConsultaStr + "]";
 	}
+	
+	
+
 
 
 }

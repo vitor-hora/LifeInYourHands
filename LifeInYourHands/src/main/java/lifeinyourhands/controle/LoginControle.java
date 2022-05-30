@@ -9,9 +9,13 @@ public class LoginControle {
 	
 
 	@GetMapping("/login")
-	public ModelAndView cadastrar() {
-		ModelAndView mv =  new ModelAndView("/login");
-		return mv;
+	public String logar() {
+		return "login";
+	}
+	
+	@GetMapping("/")
+	public String redireciona() {
+		return logar();
 	}
 	
 	

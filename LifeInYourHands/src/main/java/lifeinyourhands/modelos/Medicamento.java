@@ -13,9 +13,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "medicamento")
+@SQLDelete(sql = "update Medicamento set ativo = 0 where id = ?") //Exclusão lógica Hibernate
+@Where(clause = "ativo = 1")
 public class Medicamento implements Serializable{
 	
 	public Medicamento() {
@@ -27,6 +31,8 @@ public class Medicamento implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	private Boolean ativo = true;
 
 	private String nome;
 

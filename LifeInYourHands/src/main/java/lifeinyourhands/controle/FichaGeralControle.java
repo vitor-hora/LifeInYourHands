@@ -1,5 +1,6 @@
 package lifeinyourhands.controle;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -28,47 +29,56 @@ public class FichaGeralControle {
 	private PacienteRepositorio pacienteRepositorio;
 
 	
-	@GetMapping("/administrativo/ficha_geral/cadastrar")
-	public ModelAndView cadastrar(FichaGeral fichaGeral) {
+	@GetMapping("/administrativo/ficha_geral/cadastrar/{idPaciente}")
+	public ModelAndView cadastrar(@PathVariable("idPaciente") Long idPaciente) {
 		ModelAndView mv =  new ModelAndView("administrativo/ficha_geral/cadastro");		
 		
-		//CORRIGIR
-		Paciente paciente = pacienteRepositorio.findAll().get(0);
-		fichaGeral.setPaciente(paciente);
-		//
-		
+		FichaGeral fichaGeral = new FichaGeral();
+		if(idPaciente != null) {
+			fichaGeral = fichaGeralRepositorio.findByPaciente(idPaciente);	
+		}
+		if(fichaGeral == null) {
+			fichaGeral = new FichaGeral();
+			Paciente paciente = pacienteRepositorio.findById(idPaciente).get();
+			fichaGeral.setPaciente(paciente);
+		}
 		mv.addObject("fichaGeral",fichaGeral);
 		return mv;
 	}
 	
-	/*
-	@GetMapping("/administrativo/ficha_geral/listar")
-	public ModelAndView listar() {
+	
+	@GetMapping("/administrativo/ficha_geral/listar/{idPaciente}")
+	public ModelAndView listar(@PathVariable("idPaciente") Long idPaciente) {
 		ModelAndView mv=new ModelAndView("administrativo/ficha_geral/lista");
-		mv.addObject("listaFichaGerals", fichaGeralRepositorio.findAll());
+		
+		if(idPaciente != null) {			
+			FichaGeral fichaGeral = fichaGeralRepositorio.findByPaciente(idPaciente);
+			mv.addObject("fichaGeral", fichaGeral);		
+		
+		}	
 		return mv;
 	}
-	*/
-	
+
+	/*
 	@GetMapping("/administrativo/ficha_geral/editar/{id}")
 	public ModelAndView editar(@PathVariable("id") Long id) {
 		Optional<FichaGeral> fichaGeral = fichaGeralRepositorio.findById(id);
-		return cadastrar(fichaGeral.get());
+		return cadastrar(fichaGeral.get(), null);
 	}
-	
-	/*
+	*/
+
 	@GetMapping("/administrativo/ficha_geral/remover/{id}")
 	public ModelAndView remover(@PathVariable("id") Long id) {
 		Optional<FichaGeral> fichaGeral = fichaGeralRepositorio.findById(id);
 		fichaGeralRepositorio.delete(fichaGeral.get());
-		return listar();
+		return listar(fichaGeral.get().getPaciente().getId());
 	}
-	*/
+	
 	
 	@PostMapping("/administrativo/ficha_geral/salvar")
 	public ModelAndView salvar(@Valid FichaGeral fichaGeral, BindingResult result) {
 		if(result.hasErrors()) {
-			return cadastrar(fichaGeral);
+			return cadastrar(fichaGeral.getPaciente().getId());
 		}
 		try {
 			
@@ -79,13 +89,13 @@ public class FichaGeralControle {
 			paciente.setFichaGeral(fichaGeralCadastrada);
 		    pacienteRepositorio.saveAndFlush(paciente);
 		    
-		    return cadastrar(fichaGeralCadastrada);
+		    return cadastrar(fichaGeralCadastrada.getPaciente().getId());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return cadastrar(new FichaGeral());
+		return cadastrar(fichaGeral.getPaciente().getId());
 	}
 
 }

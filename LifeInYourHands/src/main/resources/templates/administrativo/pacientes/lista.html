@@ -29,7 +29,7 @@
 				<button class="btn btn-primary" type="button" data-toggle="collapse"
 					data-target="#collapseCPF" aria-controls="collapseCPF">CPF</button>
 				<button class="btn btn-primary" type="button" data-toggle="collapse"
-					data-target="#collapseDataNasc" aria-controls="collapseDataNasc">Datas</button>
+					data-target="#collapseDataNasc" aria-controls="collapseDataNasc">Data Nasc</button>
 			</p>
 			<div class="row">
 				<div class="col">
@@ -37,9 +37,9 @@
 
 						<nav class="navbar navbar-light bg-light">
 							<form class="form-inline" method="GET"
-								action="/pacientes/buscar/nome">
+								action="/administrativo/pacientes/buscar/nome">
 								<input class="form-control mr-sm-2" type="search"
-									placeholder="nome" aria-label="Search" name="nome" />
+									placeholder="Completo ou Parte" aria-label="Search" name="nome" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar</button>
 							</form>
 						</nav>
@@ -53,9 +53,9 @@
 
 						<nav class="navbar navbar-light bg-light">
 							<form class="form-inline" method="GET"
-								action="/pacientes/buscar/cpf">
-										<input class="form-control mr-sm-2" type="search"
-									placeholder="cpf" aria-label="Search" name="cpf" />
+								action="/administrativo/pacientes/buscar/cpf">
+										<input class="form-control mr-sm-2" type="search" data-mask="000.000.000-00" 
+									placeholder="CPF" aria-label="Search" name="cpf" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar</button>
 							</form>
 						</nav>
@@ -69,11 +69,11 @@
 
 						<nav class="navbar navbar-light bg-light">
 							<form class="form-inline" method="GET"
-								action="/pacientes/buscar/dataNasc">
+								action="/administrativo/pacientes/buscar/dataNasc">
 								<input class="form-control mr-sm-2" type="date"
-									aria-label="Search" name="entrada" /> <input
+									aria-label="Search" name="data1" /> <input
 									class="form-control mr-sm-2" type="date" aria-label="Search"
-									name="saida" />
+									name="data2" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar</button>
 							</form>
 						</nav>
@@ -104,7 +104,16 @@
 							<td th:text="${paciente.celular}"></td>
 
 
-							<td colspan="2"><a class="btn btn-info btn-sm"
+							<td colspan="3">
+							
+							<a class="btn btn-info btn-sm"
+								th:href="@{/administrativo/consultas/buscarByPaciente/{idPaciente}(idPaciente=${paciente.id})}"
+								role="button"> <span class="oi oi-book" title="Consultas"
+									aria-hidden="true"></span>
+
+							</a> 
+							
+							<a class="btn btn-info btn-sm"
 								th:href="@{/administrativo/pacientes/editar/{id}(id=${paciente.id})}"
 								role="button"> <span class="oi oi-brush" title="Editar"
 									aria-hidden="true"></span>

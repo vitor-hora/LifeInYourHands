@@ -15,10 +15,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "grade_horario")
+@SQLDelete(sql = "update grade_horario set ativo = 0 where id = ?") //Exclusão lógica Hibernate
+@Where(clause = "ativo = 1")
 public class GradeHorario implements Serializable{
 		
 	public GradeHorario() {
@@ -30,6 +34,8 @@ public class GradeHorario implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	private Boolean ativo = true;
 	
 	private Boolean disponibilidade;
 

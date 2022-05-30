@@ -1,6 +1,3 @@
-/**
- * 
- */
 
 function limpa_formulario_cep() {
     //Limpa valores do formulário de cep.
@@ -69,45 +66,42 @@ else {
 
 
 function preencherMedicosByEspecialidade(url){
-	//se possui id não faz ajax - tela edição
-	var id = $("#id").val();
+	//alert("Chegou no inicio");
 
 	
-	if(id == ""){
 		var idEspecialidade = $("#especialidade_id").val();
-		
+	    //alert("Especialidade id " + idEspecialidade);
+	    
 		if(idEspecialidade != NaN && idEspecialidade > 0) {
-			
+		
+			//alert("Entrou IF "+ url);
 			$.ajax({
 				method: "POST",
 				url: url,
 				data: JSON.stringify({idEspecialidade : idEspecialidade}),
 				contentType: "application/json; charset=utf-8",
 				success: function (response){			  		  
+					
 					var option = '<option value='+ '"' + 0 + '"' + '> Selecione o médico</option>';
 					$.each(response, function(i, obj) {
 						option += '<option value='+ '"' + obj.id + '"' + '>' + obj.nome + '</option>';
 					})
 					$("#medico_id").html(option).show();  
 					
-					
+										
 				}		
 			}).fail(function (xhr, status, errorThrown) {
 				alert("Falha " + xhr.responseText);
 			});
     	 } 
     
-    }
+    
 }
     
     
     
 function preencherGradeByMedico(url){
-	//se possui id não faz ajax - tela edição
-	var id = $("#id").val();
 
-	
-	if(id == ""){
 		var idMedico = $("#medico_id").val();
 		
 		if(idMedico != NaN && idMedico > 0) {
@@ -144,5 +138,5 @@ function preencherGradeByMedico(url){
 			});
     	} 
     
-    }
+    
 }

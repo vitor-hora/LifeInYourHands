@@ -21,20 +21,27 @@
 				</nav>
 			</div>
 
-
-
 			<div class="container" id="cadastro">
+				
+				<!-- 
+					<nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between mb-3">
+				    <div class="navbar-nav">
+				        <a class="nav-item nav-link" th:href="@{/administrativo/ficha_geral/listar/{idPaciente}(idPaciente=${consulta.paciente.id})}">Ficha Geral</a>
+				        <a class="nav-item nav-link" th:href="@{/administrativo/exames/listar/{idConsulta}(idConsulta=${consulta.id})}">Exames</a>
+				        <a class="nav-item nav-link" th:href="@{/administrativo/procedimentos/listar/{idConsulta}(idConsulta=${consulta.id})}">Procedimentos</a>
+				        <a class="nav-item nav-link" th:href="@{/administrativo/medicamentos/listar/{idConsulta}(idConsulta=${consulta.id})}">Medicamentos</a>
+				    </div>
+				    <a href="/pedido/formulario"><button class="btn btn-outline-secondary my-2 my-sm-0">Novo</button></a>
+				</nav>
+				 -->
 				<form action="/administrativo/consultas/salvar" th:object="${consulta}" method="POST">
 				
 				
 				<div class="form-row">
 				<div class="form-group col-md-12">
-						<label for="paciente_id">Paciente</label> <select id="paciente_id" th:field="*{paciente}"
-							class="form-control" name="paciente_id">
-							<option th:each="pac: ${listaPacientes}" th:value="${pac.id}"
-								th:text="${pac.nome}"></option>
-						</select>
-						<div class="invalid-feedback"></div>
+						<label for="paciente">Nome do Paciente</label> <input type="text"
+							class="form-control" id="paciente" name="paciente" readonly="readonly"
+							autofocus="autofocus" th:field="*{paciente.nome}" value="" />
 					</div>
 				</div>
 				<!--  
@@ -56,8 +63,8 @@
 				
 					<div class="form-row">
 						<div class="form-group col-md-6">
-						<label for="especialidade_id">Especialidade</label> <select id="especialidade_id" 
-							class="form-control" name="especialidade_id" onchange="preencherMedicosByEspecialidade('preencher_medicos_consulta');">
+						<label for="especialidade_id">Especialidade</label> <select id="especialidade_id" th:field="*{medico.especialidade}"
+							class="form-control" name="especialidade_id" onchange="preencherMedicosByEspecialidade('/administrativo/consultas/preencher_medicos_consulta');">
 							<option th:each="esp: ${listaEspecialidades}" th:value="${esp.id}"
 								th:text="${esp.nome}"></option>
 						</select>
@@ -65,7 +72,7 @@
 					</div>
 					<div class="form-group col-md-6">
 						<label for="medico_id">Médico</label> <select id="medico_id"  th:field="*{medico}"
-							class="form-control" name="medico_id" onchange="preencherGradeByMedico('preencher_grd_consulta');">
+							class="form-control" name="medico_id" onchange="preencherGradeByMedico('/administrativo/consultas/preencher_grd_consulta');">
 							<option th:each="med: ${listaMedicos}" th:value="${med.id}"
 								th:text="${med.nome}"></option>
 						</select>
@@ -87,6 +94,7 @@
 					
 
 					<input type="hidden" id="id" th:field="*{id}" value="" />
+					<input type="hidden" id="idPaciente" th:field="*{paciente.id}" value="" />
 					<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 				</form>
 			</div>

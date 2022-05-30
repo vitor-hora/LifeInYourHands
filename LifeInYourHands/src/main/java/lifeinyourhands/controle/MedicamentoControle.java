@@ -1,5 +1,6 @@
 package lifeinyourhands.controle;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import lifeinyourhands.modelos.Consulta;
+import lifeinyourhands.modelos.FichaGeral;
 import lifeinyourhands.modelos.Medicamento;
 import lifeinyourhands.repositorios.ConsultaRepositorio;
 import lifeinyourhands.repositorios.MedicamentoRepositorio;
@@ -27,43 +29,47 @@ public class MedicamentoControle {
 	@Autowired
 	private ConsultaRepositorio consultaRepositorio;
 		
-	@GetMapping("/administrativo/medicamentos/cadastrar")
-	public ModelAndView cadastrar(Medicamento medicamento) {
+	@GetMapping("/administrativo/medicamentos/cadastrar/{idConsulta}")
+	public ModelAndView cadastrar(Medicamento medicamento, @PathVariable("idConsulta") Long idConsulta) {
 		ModelAndView mv =  new ModelAndView("administrativo/medicamentos/cadastro");		
 		
-		//CORRIGIR
-		Consulta consulta = consultaRepositorio.findAll().get(0);
+		Consulta consulta = consultaRepositorio.findById(idConsulta).get();
 		medicamento.setConsulta(consulta);
-		//
 		
+		mv.addObject("idConsulta", idConsulta);
 		mv.addObject("medicamento",medicamento);
 		return mv;
 	}
 	
-	@GetMapping("/administrativo/medicamentos/listar")
-	public ModelAndView listar() {
-		ModelAndView mv=new ModelAndView("administrativo/medicamentos/lista");
-		mv.addObject("listaMedicamentos", medicamentoRepositorio.findAll());
+	@GetMapping("/administrativo/medicamentos/listar/{idConsulta}")
+	public ModelAndView listar(@PathVariable("idConsulta") Long idConsulta) {
+		ModelAndView mv=new ModelAndView("administrativo/medicamentos/lista");	
+		if(idConsulta != null) {			
+			List<Medicamento> listaMedicamentos = medicamentoRepositorio.findByConsulta(idConsulta);
+			mv.addObject("idConsulta", idConsulta);
+			mv.addObject("listaMedicamentos", listaMedicamentos);		
+		
+		}	
 		return mv;
 	}
 	
 	@GetMapping("/administrativo/medicamentos/editar/{id}")
 	public ModelAndView editar(@PathVariable("id") Long id) {
 		Optional<Medicamento> medicamento = medicamentoRepositorio.findById(id);
-		return cadastrar(medicamento.get());
+		return cadastrar(medicamento.get(), medicamento.get().getConsulta().getId());
 	}
 	
 	@GetMapping("/administrativo/medicamentos/remover/{id}")
 	public ModelAndView remover(@PathVariable("id") Long id) {
 		Optional<Medicamento> medicamento = medicamentoRepositorio.findById(id);
 		medicamentoRepositorio.delete(medicamento.get());
-		return listar();
+		return listar(medicamento.get().getConsulta().getId());
 	}
 	
 	@PostMapping("/administrativo/medicamentos/salvar")
 	public ModelAndView salvar(@Valid Medicamento medicamento, BindingResult result) {
 		if(result.hasErrors()) {
-			return cadastrar(medicamento);
+			return cadastrar(medicamento, medicamento.getConsulta().getId());
 		}
 		try {
 			
@@ -78,7 +84,7 @@ public class MedicamentoControle {
 			e.printStackTrace();
 		}
 		
-		return cadastrar(new Medicamento());
+		return cadastrar(new Medicamento(), medicamento.getConsulta().getId());
 	}
 
 }

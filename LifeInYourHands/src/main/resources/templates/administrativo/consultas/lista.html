@@ -2,7 +2,7 @@
 <html xmlns:layout="http://www.w3.org/1999/xhtml"
 	layout:decorate="~{administrativo/fragments/layout}">
 <head>
-<title>Grade de Horário dos Médicos</title>
+<title>Página lista de Consultas</title>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
@@ -10,27 +10,18 @@
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active"><i class="oi oi-caret-right"></i>
-						<span>Grade de Horário dos Médicos</span></li>
+						<span>Lista de Consultas</span></li>
 				</ul>
 				<a class="btn btn-primary btn-md"
-					href="/administrativo/grade_horarios/cadastrar" role="button"> <span
+					th:href="@{/administrativo/consultas/cadastrar/{idPaciente}(idPaciente=${idPaciente})}"
+					role="button"> <span
 					class="oi oi-plus" title="Cadastro" aria-hidden="true"></span> 
-					<span>Cadastrar Horário</span>
+					<span >Cadastrar Consulta </span>
+				
 				</a>
 			</div>
 		</nav>
-
 		<div class="container">
-		
-				<nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between mb-3">
-				    <div class="navbar-nav">
-				        <a class="nav-item nav-link active" href="">Todos</a>
-				        <a class="nav-item nav-link" href="">Aguardando</a>
-				        <a class="nav-item nav-link" href="">Aprovado</a>
-				        <a class="nav-item nav-link" href="">Entregue</a>
-				    </div>
-				    <a href="/pedido/formulario"><button class="btn btn-outline-secondary my-2 my-sm-0">Novo</button></a>
-				</nav>
 
 				<div class="table-responsive">
 				<table class="table table-striped table-hover table-sm">

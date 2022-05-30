@@ -1,16 +1,23 @@
 package lifeinyourhands.controle;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import lifeinyourhands.modelos.ContatoEmergencia;
@@ -45,6 +52,39 @@ public class PacienteControle {
 		return mv;
 	}
 	
+	
+	
+	@GetMapping("/administrativo/pacientes/buscar/nome")
+	@ResponseBody
+	public ModelAndView buscarPorNome(@RequestParam String nome) {		
+		ModelAndView mv=new ModelAndView("administrativo/pacientes/lista");
+		mv.addObject("listaPacientes", pacienteRepositorio.findByNome(
+				(nome != null) ? nome.toUpperCase() : nome
+				));
+		return mv;
+	}
+	
+	@GetMapping("/administrativo/pacientes/buscar/cpf")
+	@ResponseBody
+	public ModelAndView buscarPorCPF(@RequestParam String cpf) {		
+		ModelAndView mv=new ModelAndView("administrativo/pacientes/lista");
+		mv.addObject("listaPacientes", pacienteRepositorio.findByCPF(cpf));
+		return mv;
+	}
+	
+	@GetMapping("/administrativo/pacientes/buscar/dataNasc")
+	@ResponseBody
+	public ModelAndView buscarPorDataNasc(@RequestParam String data1, @RequestParam String data2) {		
+		ModelAndView mv=new ModelAndView("administrativo/pacientes/lista");
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			mv.addObject("listaPacientes", pacienteRepositorio.findByDataNasc(fmt.parse(data1), fmt.parse(data2)));
+		} catch (Exception e) {
+			mv.addObject("listaPacientes", pacienteRepositorio.findByDataNasc(null, null));
+		}
+	return mv;
+	}
+	
 	@GetMapping("/administrativo/pacientes/editar/{id}")
 	public ModelAndView editar(@PathVariable("id") Long id) {
 		Optional<Paciente> paciente = pacienteRepositorio.findById(id);
@@ -63,7 +103,7 @@ public class PacienteControle {
 		if(result.hasErrors()) {
 			return cadastrar(paciente);
 		}
-	//	Paciente.setSenha(new BCryptPasswordEncoder().encode(Paciente.getSenha()));
+		paciente.setSenha(new BCryptPasswordEncoder().encode(paciente.getSenha()));
 		try {
 			Endereco endCadastrado = enderecoRepositorio.saveAndFlush(paciente.getEndereco());
 			paciente.setEndereco(endCadastrado);

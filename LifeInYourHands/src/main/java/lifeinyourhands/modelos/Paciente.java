@@ -9,16 +9,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "paciente")
+@SQLDelete(sql = "update Paciente set ativo = 0 where id = ?") //Exclusão lógica Hibernate
+@Where(clause = "ativo = 1")
 public class Paciente extends Usuario implements Serializable {
 
 	public Paciente() {
@@ -27,10 +34,8 @@ public class Paciente extends Usuario implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
+	//private Boolean ativo = true;
+	
 	private String cpf;
 
 	private String rg;
@@ -48,26 +53,18 @@ public class Paciente extends Usuario implements Serializable {
 	//CORRIGIR
 	//private String email;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private ContatoEmergencia contatoEmergencia;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private FichaGeral fichaGeral;
 
-	@OneToMany(mappedBy = "paciente")
+	@OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
 	private List<Consulta> consultas;
-
-	@OneToOne(cascade = CascadeType.ALL)
+	/*
+	@OneToOne(cascade = CascadeType.ALL, optional = false)
 	private Endereco endereco;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	*/
 	public String getCpf() {
 		return cpf;
 	}
@@ -140,6 +137,7 @@ public class Paciente extends Usuario implements Serializable {
 		this.consultas = consultas;
 	}
 
+	/*
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -147,23 +145,12 @@ public class Paciente extends Usuario implements Serializable {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+	*/
 
 	@Override
 	public String toString() {
-		return "Paciente [id=" + id + ", cpf=" + cpf + ", rg=" + rg + ", nome=" + nome + ", sexo=" + sexo
-				+ ", dataNasc=" + dataNasc + ", celular=" + celular + ", contatoEmergencia=" + contatoEmergencia
-				+ ", fichaGeral=" + fichaGeral + ", endereco=" + endereco + "]";
+		return "Paciente [cpf=" + cpf + ", rg=" + rg + ", nome=" + nome + ", sexo=" + sexo
+				+ ", dataNasc=" + dataNasc + ", celular=" + celular + "]";
 	}
 
-	
-
-
-
-
-
-
-
-
-	
-	
 }

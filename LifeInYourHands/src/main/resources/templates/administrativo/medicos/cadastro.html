@@ -36,13 +36,13 @@
 				<div class="form-row">
 					<div class="form-group col-md-6">
 						<label for="cpf">CPF</label> <input type="text"
-							class="form-control" id="cpf" name="cpf"  data-mask="000.000.000-00"  placeholder="CPF"
+							class="form-control" id="cpf" name="cpf"  data-mask="000.000.000-00"  placeholder="XXX.XXX.XXX-XX"
 							 th:field="*{cpf}" value="" />
 						<div class="invalid-feedback"></div>
 					</div>
 					<div class="form-group col-md-6">
 						<label for="rg">RG</label> <input type="text"
-							class="form-control" id="rg" name="rg" data-mask="00.000.000-0"  placeholder="RG"
+							class="form-control" id="rg" name="rg" data-mask="00.000.000-0"   placeholder="XX.XXX.XXX-X"
 							 th:field="*{rg}" value="" />
 						<div class="invalid-feedback"></div>
 					</div>
@@ -68,7 +68,9 @@
 				<div class="form-row">
 					<div class="form-group col-md-6">
 						<label for="crm">CRM</label> <input type="text"
-							class="form-control" id="crm" name="crm" data-mask="00000-A" th:field="*{crm}" value="" />
+							class="form-control" id="crm" name="crm" data-mask="00000-A"
+							placeholder="00000-X"
+						    th:field="*{crm}" value="" />
 					<div class="invalid-feedback"></div>
 					</div>	
 					<div class="form-group col-md-6">
@@ -84,12 +86,14 @@
 					<div class="form-group col-md-6">
 						<label for="telefone">Celular</label> <input type="text"
 							class="form-control" id="celular" name="celular" data-mask="(00)00000-0000" 
+							placeholder="(XX)XXXXX-XXXX"
 							th:field="*{celular}" value="" />
 					<div class="invalid-feedback"></div>
 					</div>	
 					<div class="form-group col-md-6">
 						<label for="cep">Cep</label> <input type="text"
 							class="form-control" id="cep" name="cep" data-mask="00000-000" onblur="pesquisacep(this.value);"
+							placeholder="XXXXX-XXX"
 							th:field="*{endereco.cep}" value="" size="10" maxlength="9"
                				/>
 						<div class="invalid-feedback"></div>
@@ -98,25 +102,32 @@
 				<div class="form-row">
 					<div class="form-group col-md-6">
 						<label for="uf">UF</label> <input type="text"
-							class="form-control" id="uf" name="uf" th:field="*{endereco.uf}" value="" />
+							class="form-control" id="uf" name="uf" 
+							placeholder="Preenchido pelo CEP"
+							th:field="*{endereco.uf}" value="" readonly/>
 						<div class="invalid-feedback"></div>
 					</div>	
 					<div class="form-group col-md-6">
 						<label for="cidade">Cidade</label> <input type="text"
-							class="form-control" id="cidade" name="cidade" th:field="*{endereco.cidade}" value="" />
+							class="form-control" id="cidade" name="cidade" 
+							placeholder="Preenchido pelo CEP"
+							th:field="*{endereco.cidade}" value="" readonly/>
 						<div class="invalid-feedback"></div>
 					</div>	
 				</div>
 				<div class="form-row">
 					<div class="form-group col-md-6">
 						<label for="bairro">Bairro</label> <input type="text"
-							class="form-control" id="bairro" name="bairro" th:field="*{endereco.bairro}" value="" />
+							class="form-control" id="bairro" name="bairro" 
+							placeholder="Preenchido pelo CEP"
+							th:field="*{endereco.bairro}" value="" readonly/>
 						<div class="invalid-feedback"></div>
 					</div>	
 					<div class="form-group col-md-6">
 						<label for="logradouro">Logradouro</label> <input type="text"
-							class="form-control" id="logradouro"
-							placeholder="logradouro sem número" name="logradouro" th:field="*{endereco.logradouro}" value="" />
+							class="form-control" id="logradouro" name="logradouro" 
+							placeholder="Preenchido pelo CEP"
+							th:field="*{endereco.logradouro}" value="" readonly/>
 						<div class="invalid-feedback"></div>
 					</div>				
 				</div>

@@ -1,5 +1,6 @@
 package lifeinyourhands.controle;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import lifeinyourhands.modelos.Consulta;
+import lifeinyourhands.modelos.Exame;
 import lifeinyourhands.modelos.Procedimento;
 import lifeinyourhands.repositorios.ConsultaRepositorio;
 import lifeinyourhands.repositorios.ProcedimentoRepositorio;
@@ -27,43 +29,47 @@ public class ProcedimentoControle {
 	@Autowired
 	private ConsultaRepositorio consultaRepositorio;
 		
-	@GetMapping("/administrativo/procedimentos/cadastrar")
-	public ModelAndView cadastrar(Procedimento procedimento) {
+	@GetMapping("/administrativo/procedimentos/cadastrar/{idConsulta}")
+	public ModelAndView cadastrar(Procedimento procedimento, @PathVariable("idConsulta") Long idConsulta) {
 		ModelAndView mv =  new ModelAndView("administrativo/procedimentos/cadastro");		
 		
-		//CORRIGIR
-		Consulta consulta = consultaRepositorio.findAll().get(0);
+		Consulta consulta = consultaRepositorio.findById(idConsulta).get();
 		procedimento.setConsulta(consulta);
-		//
-		
+	
+		mv.addObject("idConsulta", idConsulta);
 		mv.addObject("procedimento",procedimento);
 		return mv;
 	}
 	
-	@GetMapping("/administrativo/procedimentos/listar")
-	public ModelAndView listar() {
-		ModelAndView mv=new ModelAndView("administrativo/procedimentos/lista");
-		mv.addObject("listaProcedimentos", procedimentoRepositorio.findAll());
+	@GetMapping("/administrativo/procedimentos/listar/{idConsulta}")
+	public ModelAndView listar(@PathVariable("idConsulta") Long idConsulta) {
+		ModelAndView mv=new ModelAndView("administrativo/procedimentos/lista");	
+		if(idConsulta != null) {			
+			List<Procedimento> listaProcedimentos = procedimentoRepositorio.findByConsulta(idConsulta);
+			mv.addObject("idConsulta", idConsulta);
+			mv.addObject("listaProcedimentos", listaProcedimentos);		
+		
+		}	
 		return mv;
 	}
 	
 	@GetMapping("/administrativo/procedimentos/editar/{id}")
 	public ModelAndView editar(@PathVariable("id") Long id) {
 		Optional<Procedimento> procedimento = procedimentoRepositorio.findById(id);
-		return cadastrar(procedimento.get());
+		return cadastrar(procedimento.get(), procedimento.get().getConsulta().getId());
 	}
 	
 	@GetMapping("/administrativo/procedimentos/remover/{id}")
 	public ModelAndView remover(@PathVariable("id") Long id) {
 		Optional<Procedimento> procedimento = procedimentoRepositorio.findById(id);
 		procedimentoRepositorio.delete(procedimento.get());
-		return listar();
+		return listar(procedimento.get().getConsulta().getId());
 	}
 	
 	@PostMapping("/administrativo/procedimentos/salvar")
 	public ModelAndView salvar(@Valid Procedimento procedimento, BindingResult result) {
-		if(result.hasErrors()) {
-			return cadastrar(procedimento);
+		if(result.hasErrors()) {			
+			return cadastrar(procedimento, procedimento.getConsulta().getId());
 		}
 		try {
 			
@@ -78,7 +84,7 @@ public class ProcedimentoControle {
 			e.printStackTrace();
 		}
 		
-		return cadastrar(new Procedimento());
+		return cadastrar(new Procedimento(), procedimento.getConsulta().getId());
 	}
 
 }

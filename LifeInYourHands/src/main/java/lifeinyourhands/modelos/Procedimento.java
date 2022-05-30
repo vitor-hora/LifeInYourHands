@@ -10,8 +10,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "procedimento")
+@SQLDelete(sql = "update Procedimento set ativo = 0 where id = ?") //Exclusão lógica Hibernate
+@Where(clause = "ativo = 1")
 public class Procedimento implements Serializable {
 
 	public Procedimento() {
@@ -24,6 +29,8 @@ public class Procedimento implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	private Boolean ativo = true;
+	
 	private String descricao;
 	
 	@ManyToOne

@@ -104,11 +104,18 @@ public class GradeHorarioControle {
 		SimpleDateFormat fmtDataCompleta = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		try {
 			Date dataCompleta = fmtDataCompleta.parse(gradeHorario.getDataAtendimentoStr().replace("T", " "));
-			gradeHorario.setDataDeAtendimento(dataCompleta);
-		} catch (ParseException e) {
+			Date dataServidor = new Date();
+			if(dataCompleta.compareTo(dataServidor) > 0 ) {
+				gradeHorario.setDataDeAtendimento(dataCompleta);
+			}else {
+				throw new Exception("Data Inválida");
+			}
+			gradeHorarioRepositorio.saveAndFlush(gradeHorario);
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		gradeHorarioRepositorio.saveAndFlush(gradeHorario);
+	
 		
 		return cadastrar(new GradeHorario());
 	}

@@ -2,7 +2,7 @@
 <html xmlns:layout="http://www.w3.org/1999/xhtml"
 	layout:decorate="~{administrativo/fragments/layout}">
 <head>
-<title>Página lista de Permissões da loja virtual</title>
+<title>Página lista de Permissões - LifeInYourHands</title>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
@@ -10,7 +10,7 @@
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active"><i class="oi oi-caret-right"></i>
-						<span>Lista de Permissões dos Funcionários</span></li>
+						<span>Lista de Permissões dos Usuários</span></li>
 				</ul>
 				<a class="btn btn-primary btn-md"
 					href="/administrativo/permissoes/cadastrar" role="button"> <span
@@ -27,7 +27,8 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>Nome do Funcionário</th>
+							<th>Nome do Usuário</th>
+							<th>Email Acesso</th>
 							<th>Nome do Papel</th>
 							<th>Data de Cadastro</th>
 						    <th>Ação</th>
@@ -36,7 +37,8 @@
 					<tbody>
 						<tr th:each="permissao : ${listaPermissoes}">
 							<td th:text="${permissao.id}"></td>
-							<td th:text="${permissao.funcionario.nome}"></td>
+							<td th:text="${permissao.usuario.nome}"></td>
+							<td th:text="${permissao.usuario.email}"></td>
 							<td th:text="${permissao.papel.nome}"></td>
 							<td th:text="${#dates.format(permissao.dataCadastro, 'dd/MM/yyyy')}" ></td>
 							

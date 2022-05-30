@@ -8,8 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "contato_emergencia")
+@SQLDelete(sql = "update contato_emergencia set ativo = 0 where id = ?") 
+@Where(clause = "ativo = 1")
 public class ContatoEmergencia implements Serializable{
 
 	public ContatoEmergencia() {
@@ -21,6 +26,8 @@ public class ContatoEmergencia implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	private Boolean ativo = true;
 
 	private String nome;
 

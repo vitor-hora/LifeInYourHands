@@ -6,11 +6,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "ficha_geral")
+@SQLDelete(sql = "update ficha_geral set ativo = 0 where id = ?") //Exclusão lógica Hibernate
+@Where(clause = "ativo = 1")
 public class FichaGeral implements Serializable{
 	
 	public FichaGeral() {
@@ -22,6 +28,8 @@ public class FichaGeral implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	private Boolean ativo = true;
 	
 	private String planoSaude;
 

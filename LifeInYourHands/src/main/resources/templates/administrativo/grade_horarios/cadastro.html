@@ -25,7 +25,7 @@
 					<div class="form-row">
 					<div class="form-group col-md-6">
 						<label for="especialidade">Especialidade</label> <select id="especialidade_id" 
-							class="form-control" name="especialidade_id" onchange="preencherMedicosByEspecialidade('preencher_medicos_grd');">
+							class="form-control" name="especialidade_id" onchange="preencherMedicosByEspecialidade('/administrativo/grade_horarios/preencher_medicos_grd');">
 							<option th:each="esp: ${listaEspecialidades}" th:value="${esp.id}"
 								th:text="${esp.nome}"></option>
 						</select>

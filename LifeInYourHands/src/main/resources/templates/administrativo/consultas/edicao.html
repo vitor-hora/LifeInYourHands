@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{administrativo/fragments/layout}">
+<head>
+    <title>Página Cadastro de Consultas - LifeInYourHands</title>
+</head>
+<body>
+		<section class="layout-content" layout:fragment="corpo">
+			<div class="page-header">
+				<nav class="navbar navbar-expand-md navbar-top bg-light">
+					<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+						<ul class="navbar-nav">
+							<li class="nav-item active"><i class="oi oi-caret-right"></i>
+								<span>Editar Consulta</span></li>
+						</ul>
+					</div>
+					<a class="btn btn-primary btn-md"
+						href="/administrativo/consultas/listar" role="button"> <span
+						class="oi oi-spreadsheet" title="Cadastro" aria-hidden="true"></span>
+						<span>Listar consultas</span>
+					</a>
+				</nav>
+			</div>
+
+			<div class="container" id="cadastro">
+				
+				
+					<nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between mb-3">
+				    <div class="navbar-nav">
+				    
+				  <!--  <a class="nav-item nav-link" th:href="@{/administrativo/ficha_geral/listar/{idPaciente}(idPaciente=${consulta.paciente.id})}">Ficha Geral</a> -->  
+				        <a class="nav-item nav-link" th:href="@{/administrativo/exames/listar/{idConsulta}(idConsulta=${consulta.id})}">Exames</a>
+				        <a class="nav-item nav-link" th:href="@{/administrativo/procedimentos/listar/{idConsulta}(idConsulta=${consulta.id})}">Procedimentos</a>
+				        <a class="nav-item nav-link" th:href="@{/administrativo/medicamentos/listar/{idConsulta}(idConsulta=${consulta.id})}">Medicamentos</a>
+				    </div>
+				    <a th:href="@{/administrativo/ficha_geral/cadastrar/{idPaciente}(idPaciente=${consulta.paciente.id})}"><button class="btn btn-outline-secondary my-2 my-sm-0">Ficha Geral</button></a>
+				</nav>
+				
+				<form action="/administrativo/consultas/salvar" th:object="${consulta}" method="POST">
+				
+				
+				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="dataConsulta">Data Consulta</label> <input type="text"
+							class="form-control" id="dataConsulta" name="dataConsulta" readonly="readonly"
+							autofocus="autofocus" th:field="*{dataConsultaStr}" value="" />
+					</div>
+					
+					<div class="form-group col-md-9">
+						<label for="paciente">Nome do Paciente</label> <input type="text"
+							class="form-control" id="paciente" name="paciente" readonly="readonly"
+						  th:field="*{paciente.nome}" value="" />
+					</div>
+				</div>
+				<!--  
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="nome">Nome do Paciente</label> <input type="text"
+							class="form-control" id="nome" name="nome" placeholder="Digite o Nome Completo do Paciente"
+							autofocus="autofocus" th:field="*{nome}" value="" />
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="cpf">CPF</label> <input type="text"
+							class="form-control" id="cpf" name="cpf"  data-mask="000.000.000-00"  placeholder="CPF"
+							autofocus="autofocus" th:field="*{cpf}" value="" />
+						<div class="invalid-feedback"></div>
+					</div>
+				</div>
+				-->
+				
+					<div class="form-row">
+						<div class="form-group col-md-6">		
+							<label for="especialidade">Especialidade</label> <input type="text"
+							class="form-control" id="especialidade" name="especialidade" readonly="readonly"
+							th:field="*{medico.especialidade.nome}" value="" />				
+							<div class="invalid-feedback"></div>
+						</div>
+					<div class="form-group col-md-6">
+						<label for="medico">Médico</label> <input type="text"
+							class="form-control" id="medico" name="medico" readonly="readonly"
+							 th:field="*{medico.nome}" value="" />				
+						
+						
+						<div class="invalid-feedback"></div>
+					</div>
+					</div>
+					
+					<div class="form-row">
+						<div class="form-group col-md-4">
+							<label for="necessidadeAfastamento">Necessidade de Afastamento?</label> <select id="necessidadeAfastamento"
+								class="form-control" name="necessidadeAfastamento" th:field="*{necessidadeAfastamento}">
+								<option value="">Selecione...</option>
+								<option value="0">Não</option>
+								<option value="1">Sim</option>
+							</select>
+							<div class="invalid-feedback"></div>
+						</div>
+						<div class="form-group col-md-4">
+						<label for="afastamentoInicio">Afastamento Início</label> <input type="date"
+							class="form-control" id="afastamentoInicio" name="afastamentoInicio" th:field="*{afastamentoInicio}"
+							value="" />
+							<div class="invalid-feedback"></div>
+						</div>
+					<div class="form-group col-md-4">
+						<label for="afastamentoFim">Afastamento Fim</label> <input type="date"
+							class="form-control" id="afastamentoInicio" name="afastamentoFim" th:field="*{afastamentoFim}"
+							value="" />
+						<div class="invalid-feedback"></div>
+					</div>
+					</div>
+					
+					
+
+					<input type="hidden" id="id" th:field="*{id}" value="" />
+					<input type="hidden" id="idPaciente" th:field="*{paciente.id}" value="" />
+					<input type="hidden" id="idMedico" th:field="*{medico.id}" value="" />
+					<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+				</form>
+			</div>
+		</section>
+
+	
+</body>
+</html>

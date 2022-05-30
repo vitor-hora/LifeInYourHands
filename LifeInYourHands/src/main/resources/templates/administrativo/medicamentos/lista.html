@@ -13,7 +13,7 @@
 						<span>Lista de Medicamentos</span></li>
 				</ul>
 				<a class="btn btn-primary btn-md"
-					href="/administrativo/medicamentos/cadastrar" role="button"> <span
+					th:href="@{/administrativo/medicamentos/cadastrar/{idConsulta}(idConsulta=${idConsulta})}" role="button"> <span
 					class="oi oi-plus" title="Cadastro" aria-hidden="true"></span> <span>Cadastrar
 						Medicamento</span>
 				</a>

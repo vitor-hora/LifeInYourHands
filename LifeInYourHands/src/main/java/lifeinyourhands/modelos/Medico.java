@@ -14,12 +14,18 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "medico")
+@SQLDelete(sql = "update Medico set ativo = 0 where id = ?") //Exclusão lógica Hibernate
+@Where(clause = "ativo = 1")
 public class Medico extends Usuario implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -27,6 +33,8 @@ public class Medico extends Usuario implements Serializable{
 	public Medico() {
 		super();
 	}
+	
+	//private Boolean ativo = true;
 	
 	private String nome;
 
@@ -44,16 +52,17 @@ public class Medico extends Usuario implements Serializable{
 
 	private String crm;
 	
-
-	@OneToOne(cascade = CascadeType.ALL)
+/*
+	@OneToOne(cascade = CascadeType.ALL, optional = false)
 	private Endereco endereco;
+*/
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "medico")
+	@OneToMany(mappedBy = "medico", cascade = CascadeType.ALL)
 	private List<Consulta> consultas;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "medico")
+	@OneToMany(mappedBy = "medico", cascade = CascadeType.ALL)
 	private List<GradeHorario> gradeHorarios;
 
 	
@@ -69,6 +78,23 @@ public class Medico extends Usuario implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="especialidade_id")
 	private Especialidade especialidade;
+
+	
+	
+	@Override
+	public Long getId() {
+		// TODO Auto-generated method stub
+		return super.getId();
+	}
+
+	@Override
+	public void setId(Long id) {
+		// TODO Auto-generated method stub
+		super.setId(id);
+	}
+
+
+
 
 	public String getNome() {
 		return nome;
@@ -109,7 +135,7 @@ public class Medico extends Usuario implements Serializable{
 		this.celular = celular;
 	}
 
-
+/*
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -118,7 +144,7 @@ public class Medico extends Usuario implements Serializable{
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-
+	*/
 
 	public String getCpf() {
 		return cpf;
@@ -183,7 +209,7 @@ public class Medico extends Usuario implements Serializable{
 	@Override
 	public String toString() {
 		return "Medico [nome=" + nome + ", sexo=" + sexo + ", dataNasc=" + dataNasc + ", celular=" + celular
-				+ ", endereco=" + endereco + ", cpf=" + cpf + ", rg=" + rg + ", crm=" + crm + "]";
+				+ ", cpf=" + cpf + ", rg=" + rg + ", crm=" + crm + "]";
 	}
 
 

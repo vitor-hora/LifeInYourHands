@@ -12,8 +12,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "permissoes")
+@SQLDelete(sql = "update Permissao set ativo = 0 where id = ?") //Exclusão lógica Hibernate
+@Where(clause = "ativo = 1")
 public class Permissao implements Serializable {
 
 	public Permissao() {
@@ -25,6 +30,8 @@ public class Permissao implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	private Boolean ativo = true;
+	
 	@Temporal(TemporalType.DATE)
 	private Date dataCadastro = new Date();
 	

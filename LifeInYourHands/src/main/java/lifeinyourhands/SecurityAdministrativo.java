@@ -25,22 +25,31 @@ public class SecurityAdministrativo extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// neste método que vamos tratar os usuários
-		
+		/*	
 		auth.inMemoryAuthentication()
         .withUser("admin").roles("ADMIN").password("{noop}password");
-		/*	
+		*/
 		auth.jdbcAuthentication().dataSource(dataSource)
 				.usersByUsernameQuery(
 						"select email as username, senha as password, 1 as enable from medico where email=?")
 				.authoritiesByUsernameQuery(
-						"select medico.email as username, papel.nome as authority from permissoes inner join medico on medico.id=permissoes.medico_id inner join papel on permissoes.papel_id=papel.id where medico.email=?")
+						"select medico.email as username, papel.nome as authority from permissoes inner join medico on medico.id=permissoes.usuario_id inner join papel on permissoes.papel_id=papel.id where medico.email=?")
 				.passwordEncoder(new BCryptPasswordEncoder());
 				;
-	*/
+
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		http.authorizeRequests().antMatchers("/login").permitAll()
+		.antMatchers("/administrativo/**").authenticated().and().formLogin()
+		.loginPage("/login").failureUrl("/login").loginProcessingUrl("/admin")
+		.defaultSuccessUrl("/administrativo").and()
+		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/administrativo/logout"))
+		.logoutSuccessUrl("/login").and().exceptionHandling()
+		.accessDeniedPage("/negado").and().csrf().disable();
+		
 		/*
 		http.authorizeRequests()
 		.anyRequest()
@@ -50,9 +59,7 @@ public class SecurityAdministrativo extends WebSecurityConfigurerAdapter {
 		.defaultSuccessUrl("/administrativo");
 		*/
 
-		
-		
-		
+		/*
 		http.authorizeRequests().antMatchers("/login").permitAll().antMatchers("/administrativo/cadastrar/**")
 				.hasAnyAuthority("USER").antMatchers("/administrativo/**").authenticated().and().formLogin()
 				.loginPage("/login").failureUrl("/login").loginProcessingUrl("/admin")
@@ -61,6 +68,7 @@ public class SecurityAdministrativo extends WebSecurityConfigurerAdapter {
 				.logoutSuccessUrl("/login").deleteCookies("JSESSIONID").and().exceptionHandling()
 				.accessDeniedPage("/negado").and().csrf().disable();
 		 	
+		*/
 	}
 
 }

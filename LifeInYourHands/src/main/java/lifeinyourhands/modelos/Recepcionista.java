@@ -5,8 +5,13 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "recepcionista")
+@SQLDelete(sql = "update Recepcionista set ativo = 0 where id = ?") //Exclusão lógica Hibernate
+@Where(clause = "ativo = 1")
 public class Recepcionista extends Usuario implements Serializable {
 
 	public Recepcionista() {

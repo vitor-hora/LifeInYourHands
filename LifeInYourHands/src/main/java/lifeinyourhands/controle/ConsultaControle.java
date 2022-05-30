@@ -25,6 +25,7 @@ import lifeinyourhands.modelos.Consulta;
 import lifeinyourhands.modelos.Especialidade;
 import lifeinyourhands.modelos.GradeHorario;
 import lifeinyourhands.modelos.Medico;
+import lifeinyourhands.modelos.Paciente;
 import lifeinyourhands.repositorios.ConsultaRepositorio;
 import lifeinyourhands.repositorios.EspecialidadeRepositorio;
 import lifeinyourhands.repositorios.GradeHorarioRepositorio;
@@ -47,38 +48,152 @@ public class ConsultaControle {
 	private GradeHorarioRepositorio gradeHorarioRepositorio;
 		
 	
-	@GetMapping("/administrativo/consultas/cadastrar")
-	public ModelAndView cadastrar(Consulta consulta) {
+	@GetMapping("/administrativo/consultas/cadastrar/{idPaciente}")
+	public ModelAndView cadastrar(@PathVariable("idPaciente") Long idPaciente, Consulta consulta) {
 		ModelAndView mv =  new ModelAndView("administrativo/consultas/cadastro");
+			
+			if(idPaciente != null) {
+				Paciente paciente = pacienteRepositorio.findById(idPaciente).get();
+				consulta.setPaciente(paciente);
+			}
+			
+			List<Especialidade> listaEspecialidades =  especialidadeRepositorio.findAll();
+			Especialidade espVazio = new Especialidade();
+			espVazio.setNome("Selecione uma Especialidade");
+			listaEspecialidades.add(0, espVazio);		
+			mv.addObject("listaEspecialidades", listaEspecialidades);
+			
+			List<Medico> listaMedicos = new ArrayList<Medico>();
+			Medico medVazio = new Medico();
+			medVazio.setNome("Selecione uma Especialidade");
+			listaMedicos.add(0, medVazio);		
+			mv.addObject("listaMedicos", listaMedicos);
+			
+			List<GradeHorario> gradesHorario = new ArrayList<GradeHorario>();
+			mv.addObject("gradesHorario", gradesHorario);
 		
 		
-		List<Especialidade> listaEspecialidades =  especialidadeRepositorio.findAll();
-		Especialidade espVazio = new Especialidade();
-		espVazio.setNome("Selecione uma Especialidade");
-		listaEspecialidades.add(0, espVazio);		
-		mv.addObject("listaEspecialidades", listaEspecialidades);
-		
-		List<Medico> listaMedicos = new ArrayList<Medico>();
-		Medico medVazio = new Medico();
-		medVazio.setNome("Selecione uma Especialidade");
-		listaMedicos.add(0, medVazio);		
-		mv.addObject("listaMedicos", listaMedicos);
-		
-		List<GradeHorario> gradesHorario = new ArrayList<GradeHorario>();
-		//GradeHorario gradeHorario = new GradeHorario();
-		//gradeHorario.setDataDeAtendimento(null);
-		//listaMedicos.add(0, medVazio);		
-		mv.addObject("gradesHorario", gradesHorario);
-		
-		
-		
-		mv.addObject("listaPacientes",pacienteRepositorio.findAll());
-		//mv.addObject("gradesHorario",gradeHorarioRepositorio.findAll());
-		//mv.addObject("listaEspecialidades", especialidadeRepositorio.findAll());
-		//mv.addObject("listaMedicos", medicoRepositorio.findAll());
+
 		mv.addObject("consulta",consulta);
 		return mv;
 	}
+	
+	
+	@GetMapping("/administrativo/consultas/editar/{id}")
+	public ModelAndView editar(@PathVariable("id") Long id) {
+		
+		ModelAndView mv =  new ModelAndView("administrativo/consultas/edicao");
+		
+		Consulta consulta = consultaRepositorio.findById(id).get();		
+	
+		SimpleDateFormat fmtDataCompleta = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		String dataCompleta = fmtDataCompleta.format(consulta.getDataConsulta());
+		consulta.setDataConsultaStr(dataCompleta);
+		
+		mv.addObject("consulta",consulta);
+		return mv;
+	}
+	
+	@GetMapping("/administrativo/consultas/editarConsulta/{id}")
+	public ModelAndView editarConsulta(@PathVariable("id") Long id) {
+		
+		ModelAndView mv =  new ModelAndView("administrativo/consultas/edicao");
+		
+		Consulta consulta = consultaRepositorio.findById(id).get();		
+		
+		List<Especialidade> listaEspecialidades =  especialidadeRepositorio.findAll();
+		listaEspecialidades.remove(consulta.getMedico().getEspecialidade());	
+		listaEspecialidades.add(0, consulta.getMedico().getEspecialidade());		
+		mv.addObject("listaEspecialidades", listaEspecialidades);
+		
+		List<Medico> listaMedicos = medicoRepositorio.findByEspecialidade(consulta.getMedico().getEspecialidade().getId());
+		listaMedicos.remove(consulta.getMedico());	
+		listaMedicos.add(0, consulta.getMedico());		
+		
+		mv.addObject("listaMedicos", listaMedicos);
+		
+		List<GradeHorario> gradesHorario = gradeHorarioRepositorio.findByMedico(consulta.getMedico().getId());
+		mv.addObject("gradesHorario", gradesHorario);
+		
+	
+		SimpleDateFormat fmtDataCompleta = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		String dataCompleta = fmtDataCompleta.format(consulta.getDataConsulta());
+		consulta.setDataConsultaStr(dataCompleta);
+		
+		mv.addObject("consulta",consulta);
+		return mv;
+	}
+	
+	
+	/*
+	@GetMapping("/administrativo/consultas/cadastrar/{idPaciente}")
+	public ModelAndView cadastrar(@PathVariable("idPaciente") Long idPaciente, Consulta consulta) {
+		ModelAndView mv =  new ModelAndView("administrativo/consultas/cadastro");
+		
+		
+		if(idPaciente == null && consulta.getPaciente()!= null ) {		
+			List<Especialidade> listaEspecialidades =  especialidadeRepositorio.findAll();
+			listaEspecialidades.remove(consulta.getMedico().getEspecialidade());	
+			listaEspecialidades.add(0, consulta.getMedico().getEspecialidade());		
+			mv.addObject("listaEspecialidades", listaEspecialidades);
+			
+			List<Medico> listaMedicos = medicoRepositorio.findByEspecialidade(consulta.getMedico().getEspecialidade().getId());
+			listaMedicos.remove(consulta.getMedico());	
+			listaMedicos.add(0, consulta.getMedico());		
+			
+			mv.addObject("listaMedicos", listaMedicos);
+			
+			List<GradeHorario> gradesHorario = gradeHorarioRepositorio.findByMedico(consulta.getMedico().getId());
+			mv.addObject("gradesHorario", gradesHorario);
+		
+		}else {
+			
+			if(idPaciente != null) {
+				Paciente paciente = pacienteRepositorio.findById(idPaciente).get();
+				consulta.setPaciente(paciente);
+			}
+			
+			List<Especialidade> listaEspecialidades =  especialidadeRepositorio.findAll();
+			Especialidade espVazio = new Especialidade();
+			espVazio.setNome("Selecione uma Especialidade");
+			listaEspecialidades.add(0, espVazio);		
+			mv.addObject("listaEspecialidades", listaEspecialidades);
+			
+			List<Medico> listaMedicos = new ArrayList<Medico>();
+			Medico medVazio = new Medico();
+			medVazio.setNome("Selecione uma Especialidade");
+			listaMedicos.add(0, medVazio);		
+			mv.addObject("listaMedicos", listaMedicos);
+			
+			List<GradeHorario> gradesHorario = new ArrayList<GradeHorario>();
+			mv.addObject("gradesHorario", gradesHorario);
+		}
+		
+
+		mv.addObject("consulta",consulta);
+		return mv;
+	}
+	
+	
+	@GetMapping("/administrativo/consultas/editar/{id}")
+	public ModelAndView editar(@PathVariable("id") Long id) {
+		Optional<Consulta> consulta = consultaRepositorio.findById(id);		
+		
+		
+		
+		return cadastrar(null, consulta.get());
+	}
+	*/
+	
+	
+	@GetMapping("/administrativo/consultas/buscarByPaciente/{idPaciente}")
+	public ModelAndView buscarByPaciente(@PathVariable("idPaciente") Long idPaciente) {
+		ModelAndView mv=new ModelAndView("administrativo/consultas/lista");
+		mv.addObject("listaConsultas", consultaRepositorio.findByPaciente(idPaciente));
+		mv.addObject("idPaciente", idPaciente);
+		return mv;
+	}
+
 	
 	@GetMapping("/administrativo/consultas/listar")
 	public ModelAndView listar() {
@@ -87,16 +202,12 @@ public class ConsultaControle {
 		return mv;
 	}
 	
-	@GetMapping("/administrativo/consultas/editar/{id}")
-	public ModelAndView editar(@PathVariable("id") Long id) {
-		Optional<Consulta> consulta = consultaRepositorio.findById(id);
-		return cadastrar(consulta.get());
-	}
-	
 	@GetMapping("/administrativo/consultas/remover/{id}")
 	public ModelAndView remover(@PathVariable("id") Long id) {
 		Optional<Consulta> consulta = consultaRepositorio.findById(id);
+	//	Long idPaciente = consulta.get().getPaciente().getId();
 		consultaRepositorio.delete(consulta.get());
+		//return listar(idPaciente);
 		return listar();
 	}
 	
@@ -104,7 +215,7 @@ public class ConsultaControle {
 	public ModelAndView salvar(@Valid Consulta consulta, BindingResult result) {
 		
 		if(result.hasErrors()) {
-			return cadastrar(consulta);
+			return cadastrar(consulta.getPaciente().getId(), consulta);
 		}
 		SimpleDateFormat fmtDataCompleta = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		try {
@@ -113,11 +224,18 @@ public class ConsultaControle {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+		//Para evitar erro transient instance
+		Paciente p = pacienteRepositorio.findById(consulta.getPaciente().getId()).get();
+		Medico m = medicoRepositorio.findById(consulta.getMedico().getId()).get();
+		consulta.setPaciente(p);
+		consulta.setMedico(m);
+		//
 		consultaRepositorio.saveAndFlush(consulta);
 		
-		return cadastrar(new Consulta());
+		return cadastrar(consulta.getPaciente().getId(), new Consulta());
 	}
+	
+	
 	
 	@PostMapping("/administrativo/consultas/preencher_medicos_consulta")
 	@ResponseBody

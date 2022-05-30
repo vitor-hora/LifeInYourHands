@@ -3,6 +3,7 @@ package lifeinyourhands.modelos;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,8 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "especialidade")
+@SQLDelete(sql = "update Especialidade set ativo = 0 where id = ?") 
+@Where(clause = "ativo = 1")
 public class Especialidade implements Serializable {
 
 
@@ -26,9 +32,11 @@ public class Especialidade implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	private Boolean ativo = true;
+	
 	private String nome;
 	
-	@OneToMany(mappedBy = "especialidade")
+	@OneToMany(mappedBy = "especialidade", cascade = CascadeType.ALL)
 	private List<Medico> medicos;
 
 	public Long getId() {

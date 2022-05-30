@@ -29,7 +29,7 @@
 				<button class="btn btn-primary" type="button" data-toggle="collapse"
 					data-target="#collapseCRM" aria-controls="collapseCRM">CRM</button>
 				<button class="btn btn-primary" type="button" data-toggle="collapse"
-					data-target="#collapseDataNasc" aria-controls="collapseDataNasc">Datas</button>
+					data-target="#collapseEspecialidade" aria-controls="collapseEspecialidade">Especialidade</button>
 			</p>
 			<div class="row">
 				<div class="col">
@@ -37,9 +37,9 @@
 
 						<nav class="navbar navbar-light bg-light">
 							<form class="form-inline" method="GET"
-								action="/medicos/buscar/nome">
+								action="/administrativo/medicos/buscar/nome">
 								<input class="form-control mr-sm-2" type="search"
-									placeholder="nome" aria-label="Search" name="nome" />
+									placeholder="Completo ou Parte" aria-label="Search" name="nome" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar</button>
 							</form>
 						</nav>
@@ -53,9 +53,9 @@
 
 						<nav class="navbar navbar-light bg-light">
 							<form class="form-inline" method="GET"
-								action="/medicos/buscar/crm">
-										<input class="form-control mr-sm-2" type="search"
-									placeholder="crm" aria-label="Search" name="crm" />
+								action="/administrativo/medicos/buscar/crm">
+										<input class="form-control mr-sm-2" type="search" data-mask="00000-A"
+									placeholder="CRM" aria-label="Search" name="crm" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar</button>
 							</form>
 						</nav>
@@ -65,15 +65,13 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					<div class="collapse" id="collapseDataNasc">
+					<div class="collapse" id="collapseEspecialidade">
 
 						<nav class="navbar navbar-light bg-light">
 							<form class="form-inline" method="GET"
-								action="/medicos/buscar/dataNasc">
-								<input class="form-control mr-sm-2" type="date"
-									aria-label="Search" name="entrada" /> <input
-									class="form-control mr-sm-2" type="date" aria-label="Search"
-									name="saida" />
+								action="/administrativo/medicos/buscar/especialidade">
+								<input class="form-control mr-sm-2" type="search"
+									placeholder="Especialidade" aria-label="Search" name="especialidade" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar</button>
 							</form>
 						</nav>

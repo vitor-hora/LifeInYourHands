@@ -15,7 +15,7 @@
 					</ul>
 				</div>
 				<a class="btn btn-primary btn-md"
-					href="/administrativo/medicamentos/listar" role="button"> <span
+					th:href="@{/administrativo/medicamentos/listar/{idConsulta}(idConsulta=${idConsulta})}" role="button"> <span
 					class="oi oi-spreadsheet" title="Cadastro" aria-hidden="true"></span>
 					<span>Listar Medicamentos</span>
 				</a>

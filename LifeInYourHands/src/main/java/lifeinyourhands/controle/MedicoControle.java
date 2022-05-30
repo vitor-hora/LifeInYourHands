@@ -1,5 +1,6 @@
 package lifeinyourhands.controle;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import lifeinyourhands.modelos.Endereco;
@@ -54,6 +57,32 @@ public class MedicoControle {
 		ModelAndView mv=new ModelAndView("administrativo/medicos/lista");
 		mv.addObject("listaMedicos", medicoRepositorio.findAll());
 		return mv;
+	}
+	
+	@GetMapping("/administrativo/medicos/buscar/nome")
+	@ResponseBody
+	public ModelAndView buscarPorNome(@RequestParam String nome) {		
+		ModelAndView mv=new ModelAndView("administrativo/medicos/lista");
+		mv.addObject("listaMedicos", medicoRepositorio.findByNome(
+				(nome != null) ? nome.toUpperCase() : nome
+				));
+		return mv;
+	}
+	
+	@GetMapping("/administrativo/medicos/buscar/crm")
+	@ResponseBody
+	public ModelAndView buscarPorCRM(@RequestParam String crm) {		
+		ModelAndView mv=new ModelAndView("administrativo/medicos/lista");
+		mv.addObject("listaMedicos", medicoRepositorio.findByCRM(crm));
+		return mv;
+	}
+	
+	@GetMapping("/administrativo/medicos/buscar/especialidade")
+	@ResponseBody
+	public ModelAndView buscarPorEspecialide(@RequestParam String especialidade) {		
+		ModelAndView mv=new ModelAndView("administrativo/medicos/lista");
+		mv.addObject("listaMedicos", medicoRepositorio.findByNomeEspecialidade(especialidade));
+	return mv;
 	}
 	
 	@GetMapping("/administrativo/medicos/editar/{id}")
